@@ -1,6 +1,5 @@
 import type { AppProps } from 'next/app'
 import { Amplify } from "aws-amplify"
-import Auth from '@aws-amplify/auth';
 Amplify.configure({
   Auth: {
     Cognito: {

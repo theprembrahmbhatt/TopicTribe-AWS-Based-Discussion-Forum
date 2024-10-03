@@ -1,36 +1,26 @@
-import { useEffect, useState } from 'react';
-import { signOut, getCurrentUser  } from 'aws-amplify/auth';
-import { useRouter } from 'next/router';
+import ForumList from '@/components/ForumList';
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import Link from 'next/link';
 
-const Home = () => {
-    const [user, setUser] = useState<any>(null);
-    const router = useRouter();
-  
-    useEffect(() => {
-      const fetchUser = async () => {
-        try {
-          const currentUser = await getCurrentUser();
-          setUser(currentUser);
-        } catch {
-          router.push('/login');
-        }
-      };
-      fetchUser();
-    }, [router]);
-  
-    const handleLogout = async () => {
-      await signOut();
-      router.push('/login');
-    };
-  
-    if (!user) return <p>Loading...</p>;
-  
+const forums = [
+  { id: 1, name: 'Discussion Forum 1' },
+  { id: 2, name: 'Discussion Forum 2' },
+  { id: 3, name: 'Discussion Forum 3' },
+];
+export default function App() {
     return (
-      <div>
-        <h1>Welcome, {user.username}</h1>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
+      <Authenticator loginMechanisms={['email']}>
+        {({ signOut, user }) => (
+          <main>
+            <h1>Hello {user?.username}</h1>
+            <button onClick={signOut}>Sign out</button>
+            <div>
+              <h1>Discussion Forums</h1>
+              <ForumList forums={forums} />
+            </div>
+          </main>
+        )}
+      </Authenticator>
     );
-  };
-
-export default Home;
+  }
