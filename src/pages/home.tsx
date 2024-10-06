@@ -2,11 +2,6 @@ import ForumList from '@/components/ForumList';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { useRouter } from 'next/router';
-const forums = [
-  { id: 1, name: 'Discussion Forum 1' },
-  { id: 2, name: 'Discussion Forum 2' },
-  { id: 3, name: 'Discussion Forum 3' },
-];
 
 export default function App() {
   const router = useRouter();
@@ -50,7 +45,7 @@ export default function App() {
           </header>
 
           <div>
-            <ForumList forums={forums} />
+            <ForumList />
           </div>
         </main>
       )}
