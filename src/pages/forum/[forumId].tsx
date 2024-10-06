@@ -18,7 +18,7 @@ export default function ForumPage() {
     <div>
       <h1>Topics in Forum {forumId}</h1>
       <TopicList topics={forumTopics} />
-      <Link href="/">Back to Forums</Link>
+      <Link href="/home">Back to Forums</Link>
     </div>
   );
 }

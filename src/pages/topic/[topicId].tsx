@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import CommentBox from '../../components/CommentBox';
+import RichEditor from '../../components/RichEditor';
 import Link from 'next/link';
 
 const commentsData = [
@@ -28,7 +28,7 @@ export default function TopicPage() {
           <li key={comment.id}>{comment.text}</li>
         ))}
       </ul>
-      <CommentBox addComment={addComment} />
+      <RichEditor />
       <Link href={`/forum/${topicId}`}>Back to Topics</Link>
     </div>
   );
