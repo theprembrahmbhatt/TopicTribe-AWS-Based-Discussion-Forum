@@ -1,5 +1,5 @@
 import ForumList from '@/components/ForumList';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/CustomNavbar';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { useRouter } from 'next/router';
