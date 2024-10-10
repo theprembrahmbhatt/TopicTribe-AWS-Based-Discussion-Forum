@@ -11,10 +11,14 @@
   "dependencies": {
     "@aws-amplify/auth": "^6.4.2",
     "@aws-amplify/ui-react": "^6.5.2",
+    "@nextui-org/react": "^2.4.8",
+    "@nextui-org/system": "^2.2.6",
+    "@nextui-org/theme": "^2.2.11",
     "aws-amplify": "^6.6.2",
     "axios": "^1.7.7",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
+    "framer-motion": "^11.11.1",
     "next": "14.2.12",
     "react": "^18",
     "react-dom": "^18",
@@ -26,10 +30,11 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-draft-wysiwyg": "^1.13.8",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.12",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
     "typescript": "^5"
   }
 }

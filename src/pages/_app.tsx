@@ -1,5 +1,7 @@
 import type { AppProps } from 'next/app'
 import { Amplify } from "aws-amplify"
+import {NextUIProvider} from '@nextui-org/react'
+import '../styles/global.css'
 Amplify.configure({
   Auth: {
     Cognito: {
@@ -9,5 +11,9 @@ Amplify.configure({
 },
 })
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <NextUIProvider>
+      <Component {...pageProps} />
+    </NextUIProvider>
+  )
 }
