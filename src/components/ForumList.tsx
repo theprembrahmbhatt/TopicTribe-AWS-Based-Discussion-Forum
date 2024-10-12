@@ -2,32 +2,35 @@ import { getCurrentUser } from '@aws-amplify/auth';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {Card, CardHeader, CardBody, CardFooter, Divider, Textarea, Input, Skeleton, Avatar,Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import { useUser } from './UserContext';
 
 type Forum = {
     name: string;
     description: string;
-    created_by: string;
+    created_by: string | null;
+    created_by_name: string | null;
   };
 export default function ForumList() {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  const [forumData, setForumData] = useState({
+  const { username, userId } = useUser();
+  const [forumData, setForumData] = useState<Forum>({
     name: '',
     description: '',
-    created_by: ''
+    created_by: '',
+    created_by_name: ''
   });
+
+  useEffect(()=>{
+    setForumData({
+      ...forumData,
+      created_by: userId,
+      created_by_name: username
+    })
+  },[username,userId])
+  
   const [isLoading, setIsLoading] = useState(false)
   const [forums, setForums] = useState<Forum[]>([]);
-  const [currUser, setCurrUser] = useState('');
-  const getAuthenticatedUser = async () => {
-    try{
-        const user = await getCurrentUser();
-        setCurrUser(user?.username || '');
-        setForumData({
-            ...forumData,
-            created_by: user?.username || ''
-        })
-    }catch(e){}
-  }
+
   // Fetch forums from the API
   const fetchForums = async () => {
     try {
@@ -43,30 +46,23 @@ export default function ForumList() {
   // Call fetchForums when component mounts
   useEffect(() => {
     fetchForums();
-    getAuthenticatedUser();
   }, []);
   
-  const handleChange = (e:any) => {
-    setForumData({
-      ...forumData,
-      [e.target.name]: e.target.value
-    });
-  };
 
-  const handleSubmit = async (e:any) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       await axios.post('https://6fd92qzz05.execute-api.us-west-1.amazonaws.com/createForums', forumData, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
-      fetchForums(); 
+      fetchForums();
+      setForumData({...forumData, name: '', description: ''})
     } catch (error) { }
   };
 
   return (
-    <div className='p-20'>
+    <div className='px-20 py-10'>
       {isLoading ? (
         <>
           <Card className="w-[200px] space-y-5 p-4" radius="lg">
@@ -95,7 +91,7 @@ export default function ForumList() {
                 <Card className="w-[400px]">
                   <CardHeader className="flex gap-3">
                   <Avatar showFallback src='https://images.unsplash.com/broken' />
-                    <p className="text-md">{forum.created_by}</p>
+                    <p className="text-md">{forum.created_by_name}</p>
                   </CardHeader>
                   <Divider/>
                   <CardBody>
@@ -108,30 +104,6 @@ export default function ForumList() {
               ))
             )
           }
-      {/* <h2>Create Forum</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="ul-global">
-          <label>Name: </label>
-          <input
-            type="text"
-            name="name"
-            value={forumData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Description: </label>
-          <input
-            type="text"
-            name="description"
-            value={forumData.description}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Create Forum</button>
-      </form> */}
         </div>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
@@ -145,14 +117,14 @@ export default function ForumList() {
                   labelPlacement="outside"
                   placeholder=" "
                   value={forumData.name}
-                  onChange={handleChange}
+                  onValueChange={(value: string)=> setForumData({...forumData, name: value})}
                   variant="bordered"/>
                   <Textarea
                     label="Description"
                     variant="bordered"
                     labelPlacement="outside"
                     value={forumData.description}
-                    onChange={handleChange}
+                    onValueChange={(value: string)=> setForumData({...forumData, description: value})}
                     placeholder=""
                     defaultValue=""
                   />
@@ -161,7 +133,7 @@ export default function ForumList() {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="primary" onPress={handleSubmit}>
+                <Button color="primary" onPress={()=>{handleSubmit();onClose()}}>
                   Create
                 </Button>
               </ModalFooter>
