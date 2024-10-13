@@ -1,14 +1,17 @@
 import { getCurrentUser } from '@aws-amplify/auth';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import {Card, CardHeader, CardBody, CardFooter, Divider, Textarea, Input, Skeleton, Avatar,Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Divider, Textarea, Input, Skeleton, Avatar,Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Link } from "@nextui-org/react";
 import { useUser } from './UserContext';
 
+
 type Forum = {
+    forum_id?: string;
     name: string;
     description: string;
     created_by: string | null;
     created_by_name: string | null;
+    created_at?: string | null;
   };
 export default function ForumList() {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -27,7 +30,7 @@ export default function ForumList() {
       created_by_name: username
     })
   },[username,userId])
-  
+
   const [isLoading, setIsLoading] = useState(false)
   const [forums, setForums] = useState<Forum[]>([]);
 
@@ -90,8 +93,11 @@ export default function ForumList() {
             forums.map((forum, index) => (
                 <Card className="w-[400px]">
                   <CardHeader className="flex gap-3">
-                  <Avatar showFallback src='https://images.unsplash.com/broken' />
-                    <p className="text-md">{forum.created_by_name}</p>
+                    <Avatar showFallback src='https://images.unsplash.com/broken' />
+                    <div className="flex flex-col">
+                      <p className="text-md">{forum.created_by_name}</p>
+                      <p className="text-small text-default-500">{forum.created_at}</p>
+                    </div>
                   </CardHeader>
                   <Divider/>
                   <CardBody>
@@ -100,6 +106,12 @@ export default function ForumList() {
                       {forum.description}
                     </p>
                   </CardBody>
+                  <Divider/>
+                  <CardFooter>
+                  <Link href={"/forum/"+forum.forum_id} showAnchorIcon className='text-blue-500 underline hover:text-blue-700'>
+                    Explore the Forum 
+                  </Link>
+                  </CardFooter>
                 </Card>
               ))
             )
