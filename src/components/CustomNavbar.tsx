@@ -1,7 +1,8 @@
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 import { useUser } from './UserContext';
 
-export default function CustomNavbar(props:any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function CustomNavbar(props: any) {
     const { signOut } = props;
     const { username } = useUser();
 

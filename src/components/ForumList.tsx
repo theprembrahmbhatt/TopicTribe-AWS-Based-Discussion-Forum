@@ -1,4 +1,3 @@
-import { getCurrentUser } from '@aws-amplify/auth';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {Card, CardHeader, CardBody, CardFooter, Divider, Textarea, Input, Skeleton, Avatar,Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Link } from "@nextui-org/react";
@@ -61,7 +60,7 @@ export default function ForumList() {
       });
       fetchForums();
       setForumData({...forumData, name: '', description: ''})
-    } catch (error) { }
+    } catch (error) { console.error(error) }
   };
 
   return (
@@ -90,8 +89,8 @@ export default function ForumList() {
           <div className='flex justify-end'><Button onPress={onOpen}>Create Forum</Button></div>
         <div className='flex flex-row flex-wrap gap-4 justify-center'>
          {forums.length > 0 && (
-            forums.map((forum, index) => (
-                <Card className="w-[400px]">
+            forums.map((forum) => (
+                <Card className="w-[400px]" key={forum.forum_id}>
                   <CardHeader className="flex gap-3">
                     <Avatar showFallback src='https://images.unsplash.com/broken' />
                     <div className="flex flex-col">
