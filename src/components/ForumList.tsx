@@ -86,7 +86,7 @@ export default function ForumList() {
         </>
       ) : (
         <div>
-          <div className='flex justify-end'><Button onPress={onOpen}>Create Forum</Button></div>
+          <div className='flex justify-end pb-10'><Button onPress={onOpen}>Create Forum</Button></div>
         <div className='flex flex-row flex-wrap gap-4 justify-center'>
          {forums.length > 0 && (
             forums.map((forum) => (
